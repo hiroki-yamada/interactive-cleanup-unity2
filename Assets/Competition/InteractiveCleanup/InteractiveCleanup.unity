@@ -31902,6 +31902,18 @@ MonoBehaviour:
   initialPositionMarker: {fileID: 1455943657}
   rootCapsuleCollider: {fileID: 536172255}
   rosBridgeScripts: {fileID: 23194256}
+  leftGripVal: {fileID: -7179683090709589034, guid: 5f3aa21f533df2c46b725d7bd361ccb7,
+    type: 3}
+  leftTriggerPressed: {fileID: 3692686194413268133, guid: 5f3aa21f533df2c46b725d7bd361ccb7,
+    type: 3}
+  leftPrimaryButton: {fileID: 8922504682665803222, guid: 5f3aa21f533df2c46b725d7bd361ccb7,
+    type: 3}
+  rightGripVal: {fileID: -4998250276251189311, guid: 5f3aa21f533df2c46b725d7bd361ccb7,
+    type: 3}
+  rightTriggerPressed: {fileID: 3434975019822610514, guid: 5f3aa21f533df2c46b725d7bd361ccb7,
+    type: 3}
+  rightPrimaryButton: {fileID: -258676953730624006, guid: 5f3aa21f533df2c46b725d7bd361ccb7,
+    type: 3}
 --- !u!114 &1642929697
 MonoBehaviour:
   m_ObjectHideFlags: 0

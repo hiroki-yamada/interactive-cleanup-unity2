@@ -9,6 +9,7 @@ using Unity.XR.CoreUtils;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.XR;
 using UnityEngine.XR;
 using UnityEngine.XR.Interaction.Toolkit.Inputs;
@@ -26,14 +27,10 @@ namespace SIGVerse.Competition.InteractiveCleanup
 
 	public class CleanupAvatarVRController : MonoBehaviour
 	{
-		//public GameObject avatar;
 		public GameObject xrOrigin;
 
 		public Laser laserLeft;
 		public Laser laserRight;
-
-		//public GameObject cameraRig;
-		//public GameObject eyeAnchor;
 
 		public Animator   avatarAnimator;
 
@@ -45,6 +42,12 @@ namespace SIGVerse.Competition.InteractiveCleanup
 
 		public GameObject rosBridgeScripts;
 
+		[SerializeField] private InputActionReference leftGripVal;
+		[SerializeField] private InputActionReference leftTriggerPressed;
+		[SerializeField] private InputActionReference leftPrimaryButton;
+		[SerializeField] private InputActionReference rightGripVal;
+		[SerializeField] private InputActionReference rightTriggerPressed;
+		[SerializeField] private InputActionReference rightPrimaryButton;
 		//----------------------------------------
 
 		private List<CapsuleCollider> capsuleColliders;
@@ -54,8 +57,6 @@ namespace SIGVerse.Competition.InteractiveCleanup
 		private List<HumanHandController> vrHandControllers;
 
 		private XRLoader activeLoader;
-		private InputDevice leftHandDevice;
-		private InputDevice rightHandDevice;
 
 		void Awake()
 		{
@@ -73,7 +74,6 @@ namespace SIGVerse.Competition.InteractiveCleanup
 				// For the competition. Read generated data.
 				case ExecutionMode.Competition:
 				{
-					//this.cameraRig.SetActive(false);
 					this.xrOrigin.SetActive(false);
 					this.avatarAnimator.enabled = false;
 
@@ -135,8 +135,6 @@ namespace SIGVerse.Competition.InteractiveCleanup
 			}
 
 			xrManagerSettings.activeLoader.Start();
-
-			//SteamVR_Actions.sigverse.Activate(SteamVR_Input_Sources.Any);
 		}
 
 		private void EnableScriptsForDataGeneration()
@@ -161,30 +159,12 @@ namespace SIGVerse.Competition.InteractiveCleanup
 //			this.xrOrigin.GetComponentInChildren<AudioListener>().enabled = true;
 			Array.ForEach(this.xrOrigin.GetComponentsInChildren<TrackedPoseDriver>(), x => x.enabled = true);
 			this.xrOrigin.GetComponentInChildren<SIGVerse.Human.IK.AnchorPostureCalculator>().enabled = true;
-
-
-			StartCoroutine(SIGVerseUtils.GetXrDevice(XRNode.LeftHand,  x => this.leftHandDevice  = x));
-			StartCoroutine(SIGVerseUtils.GetXrDevice(XRNode.RightHand, x => this.rightHandDevice = x));
-
-			//this.GetComponent<Player>().enabled = true;
-
-			//this.cameraRig.GetComponent<SIGVerse.Human.IK.AnchorPostureCalculator>().enabled = true;
-
-			//SteamVR_Behaviour_Pose[] steamVrBehaviourPoses = this.cameraRig.GetComponentsInChildren<SteamVR_Behaviour_Pose>();
-			//foreach(SteamVR_Behaviour_Pose steamVrBehaviourPose in steamVrBehaviourPoses){ steamVrBehaviourPose.enabled = true;}
-
-			//Hand[] hands = this.cameraRig.GetComponentsInChildren<Hand>(true);
-			//foreach(Hand hand in hands){ hand.enabled = true; }
-
-			//this.eyeAnchor.GetComponent<Camera>().enabled = true;
-			//this.eyeAnchor.GetComponent<SteamVR_CameraHelper>().enabled = true;
 		}
 
 		void Update()
 		{
 			// Enable/Disable Laser of Left hand
-//			if (SteamVR_Actions.sigverse_SqueezeMiddle.GetAxis(SteamVR_Input_Sources.LeftHand) > 0.95)
-			if(this.leftHandDevice.TryGetFeatureValue(CommonUsages.grip, out float leftHandTriggerValue) && leftHandTriggerValue > 0.95)
+			if(this.leftGripVal.action.ReadValue<float>() > 0.95)
 			{
 				if(!this.laserLeft.gameObject.activeInHierarchy)
 				{
@@ -200,8 +180,7 @@ namespace SIGVerse.Competition.InteractiveCleanup
 			}
 
 			// Enable/Disable Laser of Right hand
-//				if (SteamVR_Actions.sigverse_SqueezeMiddle.GetAxis(SteamVR_Input_Sources.RightHand) > 0.95)
-			if (this.rightHandDevice.TryGetFeatureValue(CommonUsages.grip, out float rightHandTriggerValue) && rightHandTriggerValue > 0.95)
+			if (this.rightGripVal.action.ReadValue<float>() > 0.95)
 			{
 				if(!this.laserRight.gameObject.activeInHierarchy)
 				{
@@ -216,11 +195,9 @@ namespace SIGVerse.Competition.InteractiveCleanup
 				}
 			}
 
-
 			if (this.laserLeft.gameObject.activeInHierarchy)
 			{
-//				if (SteamVR_Actions.sigverse_PressIndex.GetStateDown(SteamVR_Input_Sources.LeftHand))
-				if(this.leftHandDevice.TryGetFeatureValue(CommonUsages.triggerButton, out bool leftTriggerButton) && leftTriggerButton) // Index finger
+				if(this.leftTriggerPressed.action.WasPressedThisFrame()) // Index finger
 				{
 					string selectedTargetName = this.laserLeft.Point(true);
 
@@ -240,8 +217,7 @@ namespace SIGVerse.Competition.InteractiveCleanup
 
 			if (this.laserRight.gameObject.activeInHierarchy)
 			{
-//				if (SteamVR_Actions.sigverse_PressIndex.GetStateDown(SteamVR_Input_Sources.RightHand))
-				if(this.rightHandDevice.TryGetFeatureValue(CommonUsages.triggerButton, out bool rightTriggerButton) && rightTriggerButton) // Index finger
+				if(this.rightTriggerPressed.action.WasPressedThisFrame()) // Index finger
 				{
 					string selectedTargetName = this.laserRight.Point(true);
 
@@ -259,24 +235,7 @@ namespace SIGVerse.Competition.InteractiveCleanup
 				}
 			}
 
-//			if(SteamVR_Actions.sigverse_PressNearButton.GetStateDown(SteamVR_Input_Sources.RightHand))
-			if(this.rightHandDevice.TryGetFeatureValue(CommonUsages.primaryButton, out bool rightPrimaryButton) && rightPrimaryButton)
-			{
-				foreach (GameObject avatarMotionDestination in this.avatarMotionDestinations)
-				{
-					ExecuteEvents.Execute<IAvatarMotionHandler>
-					(
-						target: avatarMotionDestination,
-						eventData: null,
-						functor: (reciever, eventData) => reciever.OnAvatarPressA()
-					);
-				}
-
-				Debug.Log("Pressed A button");
-			}
-
-//			if(SteamVR_Actions.sigverse_PressNearButton.GetStateDown(SteamVR_Input_Sources.LeftHand))
-			if(this.leftHandDevice.TryGetFeatureValue(CommonUsages.primaryButton, out bool leftPrimaryButton) && leftPrimaryButton)
+			if(this.leftPrimaryButton.action.WasPressedThisFrame())
 			{
 				foreach (GameObject avatarMotionDestination in this.avatarMotionDestinations)
 				{
@@ -289,6 +248,21 @@ namespace SIGVerse.Competition.InteractiveCleanup
 				}
 
 				Debug.Log("Pressed X button");
+			}
+
+			if(this.rightPrimaryButton.action.WasPressedThisFrame())
+			{
+				foreach (GameObject avatarMotionDestination in this.avatarMotionDestinations)
+				{
+					ExecuteEvents.Execute<IAvatarMotionHandler>
+					(
+						target: avatarMotionDestination,
+						eventData: null,
+						functor: (reciever, eventData) => reciever.OnAvatarPressA()
+					);
+				}
+
+				Debug.Log("Pressed A button");
 			}
 		}
 		void OnDestroy()

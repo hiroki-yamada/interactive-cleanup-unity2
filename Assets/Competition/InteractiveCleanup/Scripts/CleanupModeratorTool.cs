@@ -1016,6 +1016,7 @@ namespace SIGVerse.Competition.InteractiveCleanup
 				case ModeratorStep.WaitForIamReady:
 				{
 					this.hasPressedButtonToStartRecordingAvatarMotion = true;
+					SIGVerseLogger.Info("Start Avatar Motion Recording");
 					break;
 				}
 				case ModeratorStep.WaitForObjectGrasped:
@@ -1024,6 +1025,7 @@ namespace SIGVerse.Competition.InteractiveCleanup
 				case ModeratorStep.WaitForNextTask:
 				{
 					this.hasPressedButtonToStopRecordingAvatarMotion = true;
+					SIGVerseLogger.Info("Stop Avatar Motion Recording");
 					break;
 				}
 				default:
