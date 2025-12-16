@@ -1,3 +1,5 @@
+SIGVerse License
+
 Copyright (c) 2010, Tetsunari Inamura of Tamagawa University Brain Science Institute All rights reserved.
 
 Redistribution and use in source and binary forms are permitted provided that the following conditions are met:
@@ -20,7 +22,7 @@ Please contact inamura@lab.tamagawa.ac.jp if you need the permission
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 We appreciate if you could cooperate with us to develop our Research Community by citing the following paper in the reference when you publish academic papers or make academic presentations based on the SIGVerse system.
-Tetsunari Inamura and Yoshiaki Mizuchi. 2021. ÅgSIGVerse: A Cloud-Based VR Platform for Research on Multimodal Human-Robot Interaction.Åh Frontiers in Robotics and AI 8 (May): 549360.
+Tetsunari Inamura and Yoshiaki Mizuchi. 2021. "SIGVerse: A Cloud-Based VR Platform for Research on Multimodal Human-Robot Interaction." Frontiers in Robotics and AI 8 (May): 549360.
 
 See https://github.com/SIGVerse/sigverse_unity_project/wiki/ for more details.
 
