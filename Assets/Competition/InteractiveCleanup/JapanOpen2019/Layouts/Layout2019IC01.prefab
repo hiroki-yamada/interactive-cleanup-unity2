@@ -2490,7 +2490,6 @@ GameObject:
   - component: {fileID: 4304303704678928}
   - component: {fileID: 33918794018581860}
   - component: {fileID: 23531325883534230}
-  - component: {fileID: 95361276185809174}
   - component: {fileID: 64891536015555044}
   m_Layer: 0
   m_Name: TVbass_A
@@ -2569,28 +2568,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!95 &95361276185809174
-Animator:
-  serializedVersion: 7
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1125982431743602}
-  m_Enabled: 0
-  m_Avatar: {fileID: 9000000, guid: 42140b0015637cf48aed8a39dc572999, type: 3}
-  m_Controller: {fileID: 0}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!64 &64891536015555044
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -11341,7 +11318,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1749129332361646}
-  m_Mesh: {fileID: 4300000, guid: 116fd32918ed0d54cbfd337ab3280b49, type: 3}
+  m_Mesh: {fileID: -8756085037183227936, guid: c1a0ae5011e7e334d92830a5d4989500, type: 3}
 --- !u!23 &23200277525464552
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -11415,7 +11392,7 @@ MeshCollider:
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 28
-  m_Mesh: {fileID: 4300000, guid: 116fd32918ed0d54cbfd337ab3280b49, type: 3}
+  m_Mesh: {fileID: -8756085037183227936, guid: c1a0ae5011e7e334d92830a5d4989500, type: 3}
 --- !u!54 &54523174147875760
 Rigidbody:
   m_ObjectHideFlags: 0
