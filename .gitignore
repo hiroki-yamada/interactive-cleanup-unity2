@@ -75,6 +75,8 @@ SIGVerse*.log
 *Google.Protobuf.dll*
 *System.Windows.Forms.dll*
 
+/Assets/Resources/UnityPlayerAccountSettings.asset*
+
 /SIGVerseConfig/*
 !/SIGVerseConfig/sample/
 !/SIGVerseConfig/InteractiveCleanup/
