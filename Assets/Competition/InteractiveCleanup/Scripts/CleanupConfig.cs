@@ -49,82 +49,90 @@ namespace SIGVerse.Competition.InteractiveCleanup
 
 		void Awake()
 		{
-			// Read Config file
-			this.configFilePath = Application.dataPath + CleanupConfig.FolderPath + CleanupConfig.ConfigFileName;
-
-			this.configFileInfo = new CleanupConfigFileInfo();
-
-			if (File.Exists(configFilePath))
+			try
 			{
-				// File open
-				StreamReader streamReader = new StreamReader(configFilePath, Encoding.UTF8);
+				// Read Config file
+				this.configFilePath = Application.dataPath + CleanupConfig.FolderPath + CleanupConfig.ConfigFileName;
 
-				this.configFileInfo = JsonUtility.FromJson<CleanupConfigFileInfo>(streamReader.ReadToEnd());
+				this.configFileInfo = new CleanupConfigFileInfo();
 
-				streamReader.Close();
-			}
-			else
-			{
+				if (File.Exists(configFilePath))
+				{
+					// File open
+					StreamReader streamReader = new StreamReader(configFilePath, Encoding.UTF8);
+
+					this.configFileInfo = JsonUtility.FromJson<CleanupConfigFileInfo>(streamReader.ReadToEnd());
+
+					streamReader.Close();
+				}
+				else
+				{
 #if UNITY_EDITOR
-				SIGVerseLogger.Warn("Interactive Cleanup config file does not exists.");
+					SIGVerseLogger.Warn("Interactive Cleanup config file does not exists.");
 
-				this.configFileInfo.teamName            = "XXXX";
-				this.configFileInfo.sessionTimeLimit    = 360;
-				this.configFileInfo.maxNumberOfTrials   = 15;
-				this.configFileInfo.isScoreFileRead     = false;
-				this.configFileInfo.executionMode       = (int)ExecutionMode.Competition;
-				this.configFileInfo.isAlwaysGoNext      = false;
-				this.configFileInfo.playbackType        = CleanupPlaybackCommon.PlaybackTypeRecord;
-				this.configFileInfo.bgmVolume           = 0.01f;
-				this.configFileInfo.reduceLoadInDataGen = false;
+					this.configFileInfo.teamName            = "XXXX";
+					this.configFileInfo.sessionTimeLimit    = 360;
+					this.configFileInfo.maxNumberOfTrials   = 15;
+					this.configFileInfo.isScoreFileRead     = false;
+					this.configFileInfo.executionMode       = (int)ExecutionMode.Competition;
+					this.configFileInfo.isAlwaysGoNext      = false;
+					this.configFileInfo.playbackType        = CleanupPlaybackCommon.PlaybackTypeRecord;
+					this.configFileInfo.bgmVolume           = 0.01f;
+					this.configFileInfo.reduceLoadInDataGen = false;
 
-				this.SaveConfig();
+					this.SaveConfig();
 #else
-				SIGVerseLogger.Error("Interactive Cleanup config file does not exists.");
-				Application.Quit();
+					SIGVerseLogger.Error("Interactive Cleanup config file does not exists.");
+					Application.Quit();
 #endif
+				}
+
+				// Initialize common parameter
+				this.scoreFilePath = Application.dataPath + CleanupConfig.FolderPath + CleanupConfig.ScoreFileName;
+
+				this.scores = new List<int>();
+
+				if (this.configFileInfo.isScoreFileRead)
+				{
+					if (!System.IO.File.Exists(this.scoreFilePath))
+					{
+						SIGVerseLogger.Error("Score file does not exists.");
+						Application.Quit();
+					}
+
+					// File open
+					StreamReader streamReader = new StreamReader(scoreFilePath, Encoding.UTF8);
+
+					string line;
+
+					while ((line = streamReader.ReadLine()) != null)
+					{
+						string scoreStr = line.Trim();
+
+						if (scoreStr == string.Empty) { continue; }
+
+						this.scores.Add(Int32.Parse(scoreStr));
+					}
+
+					streamReader.Close();
+
+					this.numberOfTrials = this.scores.Count;
+
+					if (this.numberOfTrials >= this.configFileInfo.maxNumberOfTrials)
+					{
+						SIGVerseLogger.Error("this.numberOfTrials >= this.configFileInfo.maxNumberOfTrials");
+						Application.Quit();
+					}
+				}
+				else
+				{
+					this.numberOfTrials = 0;
+				}
 			}
-
-			// Initialize common parameter
-			this.scoreFilePath = Application.dataPath + CleanupConfig.FolderPath + CleanupConfig.ScoreFileName;
-
-			this.scores = new List<int>();
-
-			if (this.configFileInfo.isScoreFileRead)
+			catch (Exception e)
 			{
-				if (!System.IO.File.Exists(this.scoreFilePath))
-				{
-					SIGVerseLogger.Error("Score file does not exists.");
-					Application.Quit();
-				}
-
-				// File open
-				StreamReader streamReader = new StreamReader(scoreFilePath, Encoding.UTF8);
-
-				string line;
-
-				while ((line = streamReader.ReadLine()) != null)
-				{
-					string scoreStr = line.Trim();
-
-					if (scoreStr == string.Empty) { continue; }
-
-					this.scores.Add(Int32.Parse(scoreStr));
-				}
-
-				streamReader.Close();
-
-				this.numberOfTrials = this.scores.Count;
-
-				if (this.numberOfTrials >= this.configFileInfo.maxNumberOfTrials)
-				{
-					SIGVerseLogger.Error("this.numberOfTrials >= this.configFileInfo.maxNumberOfTrials");
-					Application.Quit();
-				}
-			}
-			else
-			{
-				this.numberOfTrials = 0;
+				SIGVerseLogger.Error("Couldn't initialize config files. msg="+e.Message);
+				Application.Quit();
 			}
 		}
 
